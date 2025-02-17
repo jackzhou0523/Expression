@@ -5,12 +5,30 @@ using UnityEngine;
 public class MapManager : MonoBehaviour
 {      
     public static MapManager Instance {get; private set;} // Singleton
-    private Transform locationParent;
+    public Transform locationParent;
     private Dictionary<string, LocationController> spawnedLocations = new Dictionary<string, LocationController>();
-    public List<LocationData> locations;
+    // public List<LocationData> locations;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(transform.root.gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
 
     void Start()
-    {   
+    {      
+        if (locationParent == null) // Add this check
+        {
+            locationParent = new GameObject("Locations").transform;
+        }
         TimeSystem.OnTimePeriodChanged += OnTimePeriodChanged; // changing time period
         // GameManager.Instance.OnDayAdvanced += OnDayAdvanced; // changing the day
         GenerateMap(GameManager.Instance.allLocations);
@@ -24,7 +42,13 @@ public class MapManager : MonoBehaviour
      void GenerateMap(List<LocationData> locations)
      {
         foreach (LocationData data in locations)
-        {
+        {   
+            if (data.locationPrefab == null)
+            {
+                Debug.LogError($"Location {data.name} Prefab missing!");
+                continue;
+            }
+
             GameObject locationInstance = Instantiate(
                 data.locationPrefab, 
                 data.locationPosition, 
@@ -34,6 +58,11 @@ public class MapManager : MonoBehaviour
             locationInstance.transform.localScale = data.locationScale;
 
             LocationController controller = locationInstance.GetComponent<LocationController>();
+            if (controller == null)
+            {
+                Debug.LogError($"Prefab {data.locationPrefab.name} missing LocationController!");
+                continue;
+            }
             controller.Initialize(data);
 
             spawnedLocations.Add(data.locationID, controller);

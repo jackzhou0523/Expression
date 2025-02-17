@@ -13,17 +13,46 @@ public class LocationController : MonoBehaviour
     public LocationData data;
     private Material defaultMaterial;
 
-    // void Start()
-    // {
-    //     interactionCollider = GetComponent<Collider>();
-    //     rend = GetComponent<Renderer>();
-    //     defaultMaterial = rend.material;
-    // }
+    private void Awake()
+    {
+        if (rend == null) rend = GetComponent<Renderer>();
+        if (interactionCollider == null) interactionCollider = GetComponent<Collider>();
+        
+        if (rend == null || interactionCollider == null)
+        {
+            Debug.LogError($"Prefab {gameObject.name} missing component！");
+        }
+    }
+
+    void Start()
+    {
+        interactionCollider = GetComponent<Collider>();
+        rend = GetComponent<Renderer>();
+        defaultMaterial = rend.material;
+    }
 
     public void Initialize(LocationData locationdata)
     {   
         data = locationdata;
         defaultMaterial = rend.material;
+        // Add null checks and log statements
+        if (data == null)
+        {
+            Debug.LogError("LocationData is null");
+            return;
+        }
+        if (data.disabledMaterial == null)
+        {
+            Debug.LogError("disabledMaterial is null in LocationData");
+        }
+        if (data.hoverMaterial == null)
+        {
+            Debug.LogError("hoverMaterial is null in LocationData");
+        }
+        if (string.IsNullOrEmpty(data.sceneName))
+        {
+            Debug.LogError("sceneName is null or empty in LocationData");
+        }
         UpdateState();
     }
 
