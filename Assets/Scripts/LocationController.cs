@@ -1,28 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Data.Common;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Renderer))]
 public class LocationController : MonoBehaviour
-{   
-    
+{
     private Renderer rend;
     private Collider interactionCollider;
     public LocationData data;
     private Material defaultMaterial;
 
+    private PlayerInputActions inputActions;
+    private bool isHovering = false;
+
     private void Awake()
     {
         if (rend == null) rend = GetComponent<Renderer>();
         if (interactionCollider == null) interactionCollider = GetComponent<Collider>();
-        
+
         if (rend == null || interactionCollider == null)
         {
             Debug.LogError($"Prefab {gameObject.name} missing component！");
         }
+
+        inputActions = new PlayerInputActions();
     }
+
+    // private void OnEnable()
+    // {
+    //     inputActions.Enable();
+    //     inputActions.MouseControls.Click.performed += OnClick;
+    //     inputActions.MouseControls.Hover.started += OnHover;
+    //     inputActions.MouseControls.Hover.canceled += OnHoverExit;
+    // }
+
+    // private void OnDisable()
+    // {
+    //     inputActions.MouseControls.Click.performed -= OnClick;
+    //     inputActions.MouseControls.Hover.started -= OnHover;
+    //     inputActions.MouseControls.Hover.canceled -= OnHoverExit;
+    //     inputActions.Disable();
+    // }
 
     void Start()
     {
@@ -32,7 +52,7 @@ public class LocationController : MonoBehaviour
     }
 
     public void Initialize(LocationData locationdata)
-    {   
+    {
         data = locationdata;
         defaultMaterial = rend.material;
         // Add null checks and log statements
@@ -60,6 +80,33 @@ public class LocationController : MonoBehaviour
     {
         interactionCollider.enabled = !isLocked;
         rend.material = isLocked ? data.disabledMaterial : defaultMaterial;
+    }
+
+    // private void OnHover(InputAction.CallbackContext context)
+    // {
+    //     Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+    //     if (Physics.Raycast(ray, out RaycastHit hit) && hit.collider == interactionCollider)
+    //     {
+    //         rend.material = data.hoverMaterial;
+    //     }
+    // }
+
+
+    // private void OnHoverExit(InputAction.CallbackContext context)
+    // {
+    //     Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+    //     if (!Physics.Raycast(ray, out RaycastHit hit) || hit.collider != interactionCollider)
+    //     {
+    //         rend.material = defaultMaterial;
+    //     }
+    // }
+
+    private void OnClick(InputAction.CallbackContext context)
+    {
+        if (interactionCollider.enabled && isHovering)
+        {
+            SceneManager.LoadScene(data.sceneName);
+        }
     }
 
     void OnMouseEnter()
@@ -91,13 +138,5 @@ public class LocationController : MonoBehaviour
 
         interactionCollider.enabled = isUnlocked;
         rend.material = isUnlocked ? defaultMaterial : data.disabledMaterial;
-        
-
-        // // state change effect
-        // if (isUnlocked != wasUnlockedLastFrame)
-        // {
-        //     PlayStateChangeEffect();
-        // }
-        // wasUnlockedLastFrame = isUnlocked;
     }
 }

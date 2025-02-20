@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
-{   
+{      
     public static GameManager Instance {get; private set;} // Singleton 
     public int currentDay = 1;  
 
@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
     }
 
     public void AdvanceTime()
