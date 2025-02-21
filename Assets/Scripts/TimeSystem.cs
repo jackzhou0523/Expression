@@ -12,14 +12,16 @@ public static class TimeSystem
         Evening
     }
 
-    public static event System.Action<TimePeriod> OnTimePeriodChanged;
-    // public void TimePeriodChanged(TimePeriod timePeriod)
-    // {
-    //     if (OnTimePeriodChanged != null)
-    //     {
-    //         OnTimePeriodChanged(timePeriod);
-    //     }
-    // }
+    private static int _currentDay = 1;
+    public static int CurrentDay
+    {
+        get => _currentDay;
+        set
+        {
+            _currentDay = value;
+            OnDayChanged?.Invoke(_currentDay);
+        }
+    }
 
     private static TimePeriod _currentTimePeriod = TimePeriod.Morning;
     public static TimePeriod CurrentTimePeriod
@@ -31,5 +33,34 @@ public static class TimeSystem
             OnTimePeriodChanged?.Invoke(_currentTimePeriod);
         }
     }
+
+    public static event System.Action<int> OnDayChanged;
+    public static event System.Action<TimePeriod> OnTimePeriodChanged;
+
+    public static void AdvanceTime()
+    {
+        if (CurrentTimePeriod  == TimePeriod.Evening)
+        {
+            CurrentTimePeriod = TimePeriod.Morning;
+            CurrentDay++;
+        }
+        else
+        {
+            CurrentTimePeriod++;
+        }
+    }
+
+    public static void Reset()
+    {
+        CurrentDay = 1;
+        CurrentTimePeriod = TimePeriod.Morning;
+    }
+    // public void TimePeriodChanged(TimePeriod timePeriod)
+    // {
+    //     if (OnTimePeriodChanged != null)
+    //     {
+    //         OnTimePeriodChanged(timePeriod);
+    //     }
+    // }
 
 }

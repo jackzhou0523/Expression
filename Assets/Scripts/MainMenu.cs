@@ -5,11 +5,11 @@ using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
-{
+{   
     public void StartGame()
     {
         Debug.Log("Game started!");
-        SceneManager.LoadScene(0);
+        FindObjectOfType<SceneLoader>().FadeToScene(0);
     }
 
     public void QuitGame()

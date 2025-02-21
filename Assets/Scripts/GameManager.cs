@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {      
-    public static GameManager Instance {get; private set;} // Singleton 
-    public int currentDay = 1;  
+    public static GameManager Instance {get; private set;} // Singleton  
 
     [Header("Progress System")]
     // public Dictionary<string, bool> unlockedLocations = new Dictionary<string, bool>();
@@ -23,21 +22,14 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        TimeSystem.Reset();
+        // TimeSystem.AdvanceTime();
     }
 
-    public void AdvanceTime()
-    {
-        if (TimeSystem.CurrentTimePeriod == TimeSystem.TimePeriod.Evening)
-        {
-            currentDay++;
-            TimeSystem.CurrentTimePeriod = TimeSystem.TimePeriod.Morning;
-        }
-        else
-        {
-            TimeSystem.CurrentTimePeriod++;
-        }
-    }
-
+    // private void Start()
+    // {
+    //     gameObject.GetComponent<SceneFader>().InitializeSceneFader();
+    // }
     // public void SaveGame()
     // {
     //     PlayerPrefs.SetInt("CurrentDay", currentDay);
