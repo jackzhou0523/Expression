@@ -13,6 +13,13 @@ public static class TimeSystem
     }
 
     public static event System.Action<TimePeriod> OnTimePeriodChanged;
+    // public void TimePeriodChanged(TimePeriod timePeriod)
+    // {
+    //     if (OnTimePeriodChanged != null)
+    //     {
+    //         OnTimePeriodChanged(timePeriod);
+    //     }
+    // }
 
     private static TimePeriod _currentTimePeriod = TimePeriod.Morning;
     public static TimePeriod CurrentTimePeriod

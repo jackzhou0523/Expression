@@ -10,7 +10,11 @@ public class DialoguePanelUI : MonoBehaviour
     [Header("Components")]
     [SerializeField] private GameObject contentParent;
     [SerializeField] private TextMeshProUGUI dialogueText;
+    [SerializeField] private TextMeshProUGUI speakerNameText;
     [SerializeField] private DialogueChoiceButton[] choiceButtons;
+    // private const string SPEAKER_TAG = "speaker";
+    // private const string PORTRAIT_TAG = "portrait";
+    // private const string LAYOUT_TAG = "layout";
 
     private void Awake()
     {
@@ -45,9 +49,11 @@ public class DialoguePanelUI : MonoBehaviour
         ResetPanel();
     }
 
-    private void DisplayDialogue(string dialogueLine, List<Choice> dialogueChoices)
+    private void DisplayDialogue(string speakerName, string dialogueLine, List<Choice> dialogueChoices)
     {   
         dialogueText.text = dialogueLine;
+        speakerNameText.text = speakerName;
+
 
         // if there are more choices than buttons, only display the first few choices
         if (dialogueChoices.Count > choiceButtons.Length)
@@ -81,10 +87,14 @@ public class DialoguePanelUI : MonoBehaviour
             choicebuttonIndex--;
         }
 
+
+
+
     }
 
     private void ResetPanel()
     {
         dialogueText.text = "";
+        speakerNameText.text = "";
     }
 }

@@ -34,12 +34,12 @@ public class DialogueEvents
         }
     }
 
-    public event Action<string, List<Choice>> OnDisplayDialogue;
-    public void DisplayDialogue(string dialogueLine, List<Choice> dialoguechoices)
+    public event Action<string, string, List<Choice>> OnDisplayDialogue;
+    public void DisplayDialogue(string speakerName, string dialogueLine, List<Choice> dialoguechoices)
     {
         if (OnDisplayDialogue != null)
         {
-            OnDisplayDialogue(dialogueLine, dialoguechoices);
+            OnDisplayDialogue(speakerName, dialogueLine, dialoguechoices);
         }
     }
 
@@ -51,4 +51,14 @@ public class DialogueEvents
             OnUpdateChoiceIndex(choiceIndex);
         }
     }
+
+    public event Action<string, Ink.Runtime.Object> OnUpdateInkDialogueVariables;
+    public void UpdateInkDialogueVariables(string variableName, Ink.Runtime.Object variableValue)
+    {
+        if (OnUpdateInkDialogueVariables != null)
+        {
+            OnUpdateInkDialogueVariables(variableName, variableValue);
+        }
+    }
+
 }
