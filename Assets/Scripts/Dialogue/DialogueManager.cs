@@ -92,7 +92,7 @@ public class DialogueManager : MonoBehaviour
 
     private void EnterDialogue(string knotName)
     {   
-        if (dialogueActive)
+        if (dialogueActive ||!CheckKnotExists(knotName))
         {
             return;
         }
@@ -213,6 +213,19 @@ public class DialogueManager : MonoBehaviour
                     Debug.LogWarning("Tag not handled" + tag);
                     break;
             }
+        }
+    }
+
+    public bool CheckKnotExists(string knotName)
+    {
+        try
+        {
+            story.ChoosePathString(knotName);
+            return true;
+        }
+        catch (System.Exception)
+        {
+            return false;
         }
     }
 }

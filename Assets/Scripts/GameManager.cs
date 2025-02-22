@@ -26,10 +26,6 @@ public class GameManager : MonoBehaviour
         // TimeSystem.AdvanceTime();
     }
 
-    // private void Start()
-    // {
-    //     gameObject.GetComponent<SceneFader>().InitializeSceneFader();
-    // }
     // public void SaveGame()
     // {
     //     PlayerPrefs.SetInt("CurrentDay", currentDay);

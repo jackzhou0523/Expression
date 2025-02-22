@@ -12,6 +12,18 @@ public class DialogueChoiceButton : MonoBehaviour
     [SerializeField] private TextMeshProUGUI choiceText;
     [SerializeField] private int choiceIndex = -1;
 
+    private void Awake() 
+    {   
+        if (button != null)
+        {
+            button.onClick.AddListener(OnClick);
+            Debug.Log("Button onClick event registered.");
+        }
+        else
+        {
+            Debug.LogError("Button component is missing.");
+        }
+    }
     public void SetChoiceText(string text)
     {
         choiceText.text = text;

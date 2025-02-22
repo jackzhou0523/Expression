@@ -8,6 +8,7 @@ public class SceneLoader : MonoBehaviour
 {
     public Image fadePanel;
     private float fadeDuration = 1f;
+
     private void Start()
     {
         StartCoroutine(FadeIn());
@@ -45,6 +46,8 @@ public class SceneLoader : MonoBehaviour
         }
         Debug.Log("Fading in complete");
         fadePanel.gameObject.SetActive(false);
+
+        OnSceneLoaded();
     }
 
     private IEnumerator FadeOut(int sceneIndex)
@@ -61,4 +64,31 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene(sceneIndex);
     }
 
+    private void OnSceneLoaded()
+    {
+        StartCoroutine(CheckAutoDialogue());
+    }
+
+    private IEnumerator CheckAutoDialogue()
+    {   
+        yield return null;
+        string currentLocation = SceneManager.GetActiveScene().name;
+
+        string knotName = GenerateKnotName(currentLocation);
+        if (CheckKnotExists(knotName))
+        {   
+            GameEventsManager.Instance.dialogueEvents.EnterDialogue(knotName);
+        }
+
+    }
+
+    private string GenerateKnotName(string location)
+    {
+        return $"{location}_Day{TimeSystem.CurrentDay}_{TimeSystem.CurrentTimePeriod}";
+    }
+
+    private bool CheckKnotExists(string knotName)
+    {
+        return DialogueManager.Instance.CheckKnotExists(knotName);
+    }
 }

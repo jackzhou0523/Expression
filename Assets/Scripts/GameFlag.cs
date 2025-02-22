@@ -13,7 +13,7 @@ public class GameFlag : ScriptableObject
 
 public enum FlagCategory
 {
-    Location, // unlock locctions
+    Location, // unlock locations
     Dialogue, // unlock dialogues
     Character, // unlock character's interactions?
     Item // unlock items

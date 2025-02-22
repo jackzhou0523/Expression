@@ -9,7 +9,7 @@ public class MainMenu : MonoBehaviour
     public void StartGame()
     {
         Debug.Log("Game started!");
-        FindObjectOfType<SceneLoader>().FadeToScene(0);
+        FindObjectOfType<SceneLoader>().FadeToScene(2);
     }
 
     public void QuitGame()
