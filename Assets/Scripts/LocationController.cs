@@ -4,26 +4,30 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Renderer))]
+// [RequireComponent(typeof(Renderer))]
 public class LocationController : MonoBehaviour
-{
-    private Renderer rend;
+{   
+    [Header("Renderer")]
+    // private Renderer rend;
+    [SerializeField ]private MeshRenderer[] childRenderers;
+    [SerializeField] Material[] childdefaultMaterials;
+
+    
     private Collider interactionCollider;
     public LocationData data;
-    private Material defaultMaterial;
+    // private Material defaultMaterial;
 
     private PlayerInputActions inputActions;
-    private bool isHovering = false;
 
     private void Awake()
     {
-        if (rend == null) rend = GetComponent<Renderer>();
+        // if (rend == null) rend = GetComponent<Renderer>();
         if (interactionCollider == null) interactionCollider = GetComponent<Collider>();
 
-        if (rend == null || interactionCollider == null)
-        {
-            Debug.LogError($"Prefab {gameObject.name} missing component！");
-        }
+        // if (rend == null || interactionCollider == null)
+        // {
+        //     Debug.LogError($"Prefab {gameObject.name} missing component！");
+        // }
 
         inputActions = new PlayerInputActions();
     }
@@ -47,14 +51,39 @@ public class LocationController : MonoBehaviour
     void Start()
     {
         interactionCollider = GetComponent<Collider>();
-        rend = GetComponent<Renderer>();
-        defaultMaterial = rend.material;
+        childRenderers = GetComponentsInChildren<MeshRenderer>();
+        childdefaultMaterials = new Material[childRenderers.Length];
+        if (childRenderers.Length > 0)
+        {
+            for (int i = 0; i < childRenderers.Length; i++)
+            {
+                childdefaultMaterials[i] = childRenderers[i].material;
+                // Debug.Log(childRenderers[i].material);
+            }
+        }
+        // rend = GetComponent<Renderer>();
+        // defaultMaterial = rend.material;
     }
+
 
     public void Initialize(LocationData locationdata)
     {
         data = locationdata;
-        defaultMaterial = rend.material;
+        // Debug.Log (childRenderers.Length);
+        // Debug.Log (childdefaultMaterials.Length);
+        if (childRenderers.Length > 0)
+        {
+            // if (childdefaultMaterials == null || childdefaultMaterials.Length != childRenderers.Length)
+            // {
+            //     childdefaultMaterials = new Material[childRenderers.Length];
+            // }
+
+            for (int i = 0; i < childRenderers.Length; i++)
+            {
+                childRenderers[i].material = childdefaultMaterials[i];
+            }
+        }
+        // defaultMaterial = rend.material;
         // Add null checks and log statements
         if (data == null)
         {
@@ -79,7 +108,15 @@ public class LocationController : MonoBehaviour
     public void SetLockState(bool isLocked)
     {
         interactionCollider.enabled = !isLocked;
-        rend.material = isLocked ? data.disabledMaterial : defaultMaterial;
+        // rend.material = isLocked ? data.disabledMaterial : defaultMaterial;
+
+        if (childRenderers.Length > 0)
+        {
+            for (int i = 0; i < childRenderers.Length; i++)
+            {
+                childRenderers[i].material = isLocked ? data.disabledMaterial : childdefaultMaterials[i];
+            }
+        }
     }
 
     // private void OnHover(InputAction.CallbackContext context)
@@ -101,26 +138,70 @@ public class LocationController : MonoBehaviour
     //     }
     // }
 
-    private void OnClick(InputAction.CallbackContext context)
-    {
-        if (interactionCollider.enabled && isHovering)
-        {
-            SceneManager.LoadScene(data.sceneName);
-        }
-    }
+    // private void OnClick(InputAction.CallbackContext context)
+    // {
+    //     if (interactionCollider.enabled && isHovering)
+    //     {
+    //         SceneManager.LoadScene(data.sceneName);
+    //     }
+    // }
+
+    // void Update()
+    // {
+    //     HandleMouseHover();
+    // }
+
+    // private void HandleMouseHover()
+    // {
+    //     Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+    //     if (Physics.Raycast(ray, out RaycastHit hit))
+    //     {
+    //         if (hit.collider == interactionCollider)
+    //         {
+    //             OnMouseEnter();
+    //         }
+    //         else
+    //         {
+    //             OnMouseExit();
+    //         }
+    //     }
+    //     else
+    //     {
+    //         OnMouseExit();
+    //     }
+    // }
 
     void OnMouseEnter()
-    {   
-        if(interactionCollider.enabled)
+    {      
+        Debug.Log("Mouse Enter");
+        // if(interactionCollider.enabled)
+        // {
+        //     rend.material = data.hoverMaterial;
+        // }
+
+        if (interactionCollider.enabled && childRenderers.Length > 0)
         {
-            rend.material = data.hoverMaterial;
+            for (int i = 0; i < childRenderers.Length; i++)
+            {
+                childRenderers[i].material = data.hoverMaterial;
+            }
         }
+
+        
     }
     void OnMouseExit()
     {    
-        if (interactionCollider.enabled)
+        // if (interactionCollider.enabled)
+        // {
+        //     rend.material = defaultMaterial;
+        // }
+
+        if (interactionCollider.enabled && childRenderers.Length > 0)
         {
-            rend.material = defaultMaterial;
+            for (int i = 0; i < childRenderers.Length; i++)
+            {
+                childRenderers[i].material = childdefaultMaterials[i];
+            }
         }
     }
 
@@ -137,6 +218,13 @@ public class LocationController : MonoBehaviour
         bool isUnlocked = data.IsUnlocked(GameManager.Instance._flagStates);
 
         interactionCollider.enabled = isUnlocked;
-        rend.material = isUnlocked ? defaultMaterial : data.disabledMaterial;
+        // rend.material = isUnlocked ? defaultMaterial : data.disabledMaterial;
+        if (childRenderers.Length > 0)
+        {
+            for (int i = 0; i < childRenderers.Length; i++)
+            {
+                childRenderers[i].material = isUnlocked ? childdefaultMaterials[i] : data.disabledMaterial;
+            }
+        }
     }
 }

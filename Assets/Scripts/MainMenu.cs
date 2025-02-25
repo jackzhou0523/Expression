@@ -9,7 +9,7 @@ public class MainMenu : MonoBehaviour
     public void StartGame()
     {
         Debug.Log("Game started!");
-        FindObjectOfType<SceneLoader>().FadeToScene(2);
+        FindObjectOfType<SceneLoader>().FadeToSceneName("Dorm");
     }
 
     public void QuitGame()
@@ -22,6 +22,4 @@ public class MainMenu : MonoBehaviour
     {
         Debug.Log("Meet the team!");
     }
-
-
 }

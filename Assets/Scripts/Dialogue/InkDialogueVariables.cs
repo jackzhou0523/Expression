@@ -15,7 +15,7 @@ public class InkDialogueVariables
         {
             Ink.Runtime.Object variableValue = story.variablesState.GetVariableWithName(variableName);
             inkVariables.Add(variableName, variableValue);
-            Debug.Log("Variable name: " + variableName + " Variable value: " + variableValue);
+            // Debug.Log("Variable name: " + variableName + " Variable value: " + variableValue);
         }
     }
 

@@ -1455,7 +1455,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebab6faad7f45114a81efd6da09110e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  typingspeed: 0.03
   contentParent: {fileID: 51604168}
+  continueIcon: {fileID: 1355572595}
   dialogueText: {fileID: 32482005}
   speakerNameText: {fileID: 130579095}
   choiceButtons:
@@ -1662,7 +1664,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &929342033
 Transform:
   m_ObjectHideFlags: 0

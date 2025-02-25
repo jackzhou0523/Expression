@@ -6,12 +6,18 @@ using Ink.Runtime;
 using UnityEngine.EventSystems;
 
 public class DialoguePanelUI : MonoBehaviour
-{
+{   
+    [Header("Typing Speed")]
+    [SerializeField] private float typingspeed = 0.05f;
     [Header("Components")]
     [SerializeField] private GameObject contentParent;
+    [SerializeField] private GameObject continueIcon;
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private TextMeshProUGUI speakerNameText;
     [SerializeField] private DialogueChoiceButton[] choiceButtons;
+
+    private Coroutine displayLineCoroutine;
+    private bool canContinueToNextLine = true;
     // private const string SPEAKER_TAG = "speaker";
     // private const string PORTRAIT_TAG = "portrait";
     // private const string LAYOUT_TAG = "layout";
@@ -49,25 +55,29 @@ public class DialoguePanelUI : MonoBehaviour
         ResetPanel();
     }
 
-    private void DisplayDialogue(string speakerName, string dialogueLine, List<Choice> dialogueChoices)
-    {   
-        dialogueText.text = dialogueLine;
-        speakerNameText.text = speakerName;
+    public bool getCanContinueToNextLine()
+    {
+        return canContinueToNextLine;
+    }
 
+    private void hideChoices()
+    {
+        foreach (DialogueChoiceButton choicebutton in choiceButtons)
+        {
+            choicebutton.gameObject.SetActive(false);
+            // choicebutton.button.OnDeselect(null);
+        }
+    }
 
-        // if there are more choices than buttons, only display the first few choices
+    private void choiceDisplay(List<Choice> dialogueChoices)
+    {
         if (dialogueChoices.Count > choiceButtons.Length)
         {
             Debug.LogError("Too many choices to display!");
         }
-
-        foreach (DialogueChoiceButton choicebutton in choiceButtons)
-        {
-            choicebutton.gameObject.SetActive(false);
-        }
-
+        hideChoices();
         // display the choices
-        int choicebuttonIndex = dialogueChoices.Count - 1;
+        int choicebuttonIndex = dialogueChoices.Count -1;
         for (int inkChoiceIndex = 0; inkChoiceIndex < dialogueChoices.Count; inkChoiceIndex++)
         {
             Choice dialoguechoice = dialogueChoices[inkChoiceIndex];
@@ -80,17 +90,60 @@ public class DialoguePanelUI : MonoBehaviour
             choiceButton.button.onClick.RemoveAllListeners();
             choiceButton.button.onClick.AddListener(() => choiceButton.OnClick());
 
-            if (inkChoiceIndex == 0)
-            {
-                EventSystem.current.SetSelectedGameObject(choiceButton.gameObject);
-            }
+            // hover state for the keyboard
+            // if (inkChoiceIndex == 0)
+            // {
+            //     EventSystem.current.SetSelectedGameObject(choiceButton.gameObject);
+            // }
             choicebuttonIndex--;
         }
-
-
-
-
     }
+
+    private IEnumerator DisplayLine(string line, List<Choice> dialogueChoices)
+    {   
+        // epmty the dialogue text
+        dialogueText.text = "";
+
+        // hide items while text is typing
+        continueIcon.SetActive(false);
+        hideChoices();
+
+        canContinueToNextLine = false;
+
+        foreach (char letter in line)
+        {
+            dialogueText.text += letter;
+            yield return new WaitForSeconds(typingspeed);
+        }
+        
+        // show items after text is done typing
+        continueIcon.SetActive(true);
+        choiceDisplay(dialogueChoices);
+
+        canContinueToNextLine = true;
+    }
+
+    
+    private void DisplayDialogue(string speakerName, string dialogueLine, List<Choice> dialogueChoices)
+    {   
+        if (canContinueToNextLine)
+        {
+            if (displayLineCoroutine != null)
+            {
+                StopCoroutine(displayLineCoroutine);
+            }
+            displayLineCoroutine = StartCoroutine(DisplayLine(dialogueLine, dialogueChoices));
+        }
+        else
+        {
+            StopCoroutine(displayLineCoroutine);
+            dialogueText.text = dialogueLine;
+            canContinueToNextLine = true;
+        }
+
+        speakerNameText.text = speakerName;
+    }
+
 
     private void ResetPanel()
     {

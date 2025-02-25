@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
         }
 
         TimeSystem.Reset();
+        InitializeFlags();
         // TimeSystem.AdvanceTime();
     }
 
@@ -40,6 +41,7 @@ public class GameManager : MonoBehaviour
         foreach (GameFlag flag in Resources.LoadAll<GameFlag>("Flags"))
         {
             _flagStates[flag.id] = flag.defaultState;
+            Debug.Log("Flag " + flag.id + " initialized with state " + flag.defaultState);
         }
     }
 

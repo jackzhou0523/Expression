@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be276fb0971c284eba16098f29e76b6, type: 3}
+  m_Name: Hunt
+  m_EditorClassIdentifier: 
+  locationID: Hunt
+  locationName: Hunt
+  sceneName: Hunt
+  locationPrefab: {fileID: 2220508519061118691, guid: c836795de6a3579498097ba153570b73,
+    type: 3}
+  locationPosition: {x: 4.255002, y: 10.329133, z: 46.119133}
+  locationRotation: {x: 0, y: 0, z: 0}
+  locationScale: {x: 1, y: 1, z: 1}
+  hoverMaterial: {fileID: 2100000, guid: ca9de57d00c87a74dbef00cade75f711, type: 2}
+  disabledMaterial: {fileID: 2100000, guid: 360f52ceb413f5e47b74f587d0c33363, type: 2}
+  unlockConditions:
+  - availableTimePeriod: 
+    requiredFlag: {fileID: 11400000, guid: 1a5835babe3217b40a80b66870fc144f, type: 2}
+    requiredState: 0

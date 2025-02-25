@@ -29,6 +29,16 @@ public class SceneLoader : MonoBehaviour
         StartCoroutine(FadeOut(index));
     }
 
+    public void FadeToSceneName(string sceneName)
+    {   
+        if (SceneManager.GetSceneByName(sceneName) == null)
+        {
+            Debug.LogError($"Scene {sceneName} does not exist.");
+            return;
+        }
+        StartCoroutine(FadeOutName(sceneName));
+    }
+
     private IEnumerator FadeIn()
     {   
         if (fadePanel == null)
@@ -50,6 +60,20 @@ public class SceneLoader : MonoBehaviour
         OnSceneLoaded();
     }
 
+    private IEnumerator FadeOutName(string sceneName)
+    {
+        float alpha = 0f;
+        fadePanel.gameObject.SetActive(true);
+        Color panelColor = fadePanel.color;
+        while (alpha < 1f)
+        {
+            alpha += Time.deltaTime / fadeDuration;
+            fadePanel.color = new Color(panelColor.r, panelColor.g, panelColor.b, alpha);
+            yield return null;
+        }
+        Debug.Log(sceneName);
+        SceneManager.LoadScene(sceneName);
+    }
     private IEnumerator FadeOut(int sceneIndex)
     {
         float alpha = 0f;
@@ -61,6 +85,7 @@ public class SceneLoader : MonoBehaviour
             fadePanel.color = new Color(panelColor.r, panelColor.g, panelColor.b, alpha);
             yield return null;
         }
+        Debug.Log(sceneIndex);
         SceneManager.LoadScene(sceneIndex);
     }
 

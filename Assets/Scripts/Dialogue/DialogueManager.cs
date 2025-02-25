@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Ink.Runtime;
+using System.Runtime.CompilerServices;
 
 public class DialogueManager : MonoBehaviour
 {      
@@ -87,6 +88,10 @@ public class DialogueManager : MonoBehaviour
         {
             return;
         }
+        // if (canContinueToNextLine)
+        // {
+        //     ContinueOrExitStory();
+        // }
         ContinueOrExitStory();
     }
 
@@ -123,6 +128,7 @@ public class DialogueManager : MonoBehaviour
 
     private void ContinueOrExitStory()
     {   
+        bool canContinueToNextLine = FindObjectOfType<DialoguePanelUI>().getCanContinueToNextLine();
         // if there are choices, choose the choice
         if (story.currentChoices.Count > 0 && currentChoiceIndex != -1)
         {   
@@ -132,7 +138,7 @@ public class DialogueManager : MonoBehaviour
             currentChoiceIndex = -1;
         }
         
-        if (story.canContinue)
+        if (story.canContinue && canContinueToNextLine) 
         {   
             string dialogueline = story.Continue();
 
@@ -154,7 +160,7 @@ public class DialogueManager : MonoBehaviour
                 GameEventsManager.Instance.dialogueEvents.DisplayDialogue(speakerName, dialogueline, story.currentChoices);
             }
         }
-        else if (story.currentChoices.Count == 0)
+        else if (story.currentChoices.Count == 0 && !story.canContinue)
         {
             ExitDialogue();
         }

@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3be276fb0971c284eba16098f29e76b6, type: 3}
-  m_Name: Test
+  m_Name: Auditorium
   m_EditorClassIdentifier: 
-  locationID: 1
-  locationName: Test
-  sceneName: Test_Loc
-  locationPrefab: {fileID: 6499668441768517110, guid: 1ec45f2d88ea5fd44b2d9903e472c8e9,
+  locationID: Auditorium
+  locationName: Auditorium
+  sceneName: Auditorium
+  locationPrefab: {fileID: 2626948894649533109, guid: 9ef3cf225db66c94f8e1e27b9a218cc8,
     type: 3}
-  locationPosition: {x: 0, y: 0, z: 0}
+  locationPosition: {x: 0.6767865, y: 6.0896797, z: -31.718918}
   locationRotation: {x: 0, y: 0, z: 0}
   locationScale: {x: 1, y: 1, z: 1}
-  hoverMaterial: {fileID: 2100000, guid: ecdcfa80fd3fa0048ac921452c42bcfa, type: 2}
-  disabledMaterial: {fileID: 2100000, guid: 654849e32f7aaf64f8fcfde98640af4c, type: 2}
+  hoverMaterial: {fileID: 2100000, guid: ca9de57d00c87a74dbef00cade75f711, type: 2}
+  disabledMaterial: {fileID: 2100000, guid: 360f52ceb413f5e47b74f587d0c33363, type: 2}
   unlockConditions: []

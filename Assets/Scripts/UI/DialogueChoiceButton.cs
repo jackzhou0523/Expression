@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.Assertions.Must;
 
 public class DialogueChoiceButton : MonoBehaviour
 {
@@ -17,7 +18,8 @@ public class DialogueChoiceButton : MonoBehaviour
         if (button != null)
         {
             button.onClick.AddListener(OnClick);
-            Debug.Log("Button onClick event registered.");
+            // Debug.Log("Button onClick event registered.");
+            // defaultColor = button.colors.normalColor;
         }
         else
         {
