@@ -23,9 +23,9 @@ VAR DayXDorm = "DayXDorm"
 
 
 === Dorm_Day1_Morning ===
-Poli! What brings you here? #speaker:You
-Come on, there's a guest speaker today. Didn’t you enroll in some social science elective? This guy’s topic is actually on your syllabus. #speaker:Poli
+Poli! What brings you here? #speaker:You #portrait:default
+Come on, there's a guest speaker today. Didn’t you enroll in some social science elective? This guy’s topic is actually on your syllabus. #speaker:Poli #portrait:Poli
 Oh? That kind of topic is pretty controversial. How did the school even approve his lecture? #speaker:You
-Don’t forget—under academic freedom, we can’t selectively protect some speakers while banning others based on their viewpoint. (He smirks, motioning you to follow him.) #speaker:Poli
+Don’t forget—under academic freedom, we can’t selectively protect some speakers while banning others based on their viewpoint. (He smirks, motioning you to follow him.) #speaker:Poli #portrait:Poli
 No more questions—just come already! I’ll be waiting at the auditorium. 
 -> END

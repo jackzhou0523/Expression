@@ -38,15 +38,18 @@ public static class TimeSystem
     public static event System.Action<TimePeriod> OnTimePeriodChanged;
 
     public static void AdvanceTime()
-    {
+    {   
+        Debug.Log("Advancing time");
         if (CurrentTimePeriod  == TimePeriod.Evening)
         {
             CurrentTimePeriod = TimePeriod.Morning;
             CurrentDay++;
+            Debug.Log("Day " + CurrentDay + " " + CurrentTimePeriod);
         }
         else
         {
             CurrentTimePeriod++;
+            Debug.Log("Day " + CurrentDay + " " + CurrentTimePeriod);
         }
     }
 

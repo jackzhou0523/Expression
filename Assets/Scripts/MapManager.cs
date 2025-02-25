@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MapManager : MonoBehaviour
 {      
@@ -8,6 +9,7 @@ public class MapManager : MonoBehaviour
     public Transform locationParent;
     private Dictionary<string, LocationController> spawnedLocations = new Dictionary<string, LocationController>();
     // public List<LocationData> locations;
+    private bool firstTime = true;
 
     void Awake()
     {
@@ -20,27 +22,45 @@ public class MapManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        // GenerateMap(GameManager.Instance.allLocations);
     }
 
 
     void Start()
-    {      
-        if (locationParent == null) // Add this check
-        {
-            locationParent = new GameObject("Locations").transform;
-        }
-        TimeSystem.OnTimePeriodChanged += OnTimePeriodChanged; // changing time period
+    {   
+        // TimeSystem.OnTimePeriodChanged += OnTimePeriodChanged; // changing time period
         // GameManager.Instance.OnDayAdvanced += OnDayAdvanced; // changing the day
-        GenerateMap(GameManager.Instance.allLocations);
     }
 
+    private void OnEnable() 
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable() 
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Map")
+        {   
+            if (locationParent == null) // Add check
+            {
+                locationParent = new GameObject("Locations").transform;
+            }
+            GenerateMap(GameManager.Instance.allLocations);
+        }
+    }
+    
     void OnDestroy() {
-        TimeSystem.OnTimePeriodChanged -= OnTimePeriodChanged;
+        // TimeSystem.OnTimePeriodChanged -= OnTimePeriodChanged;
         // GameManager.Instance.OnDayAdvanced -= OnDayChanged;
     }
 
-     void GenerateMap(List<LocationData> locations)
-     {
+    public void GenerateMap(List<LocationData> locations)
+    {   
         foreach (LocationData data in locations)
         {   
             if (data.locationPrefab == null)
@@ -64,29 +84,36 @@ public class MapManager : MonoBehaviour
                 continue;
             }
             controller.Initialize(data);
+            
+            // if (!firstTime)
+            // {   
+            //     return;
+            // }
 
-            spawnedLocations.Add(data.locationID, controller);
+            // spawnedLocations.Add(data.locationID, controller);
         }
-     }
-
-    private void OnTimePeriodChanged(TimeSystem.TimePeriod currentTimePeriod)
-    {
-        Debug.Log("Time period changed to " + currentTimePeriod);
-        UpdateAllLocations();
+        firstTime = false;
+        
     }
 
-    private void OnDayChanged(int currentDay)
-    {
-        Debug.Log("Day changed to " + currentDay);
-        UpdateAllLocations();
-    }
+    // private void OnTimePeriodChanged(TimeSystem.TimePeriod currentTimePeriod)
+    // {
+    //     Debug.Log("Time period changed to " + currentTimePeriod);
+    //     UpdateAllLocations();
+    // }
 
-    public void UpdateAllLocations()
-    {
-        foreach (LocationController controller in spawnedLocations.Values)
-        {
-            controller.UpdateState();
-        }
-    }
+    // private void OnDayChanged(int currentDay)
+    // {
+    //     Debug.Log("Day changed to " + currentDay);
+    //     UpdateAllLocations();
+    // }
+
+    // public void UpdateAllLocations()
+    // {
+    //     foreach (LocationController controller in spawnedLocations.Values)
+    //     {
+    //         controller.UpdateState();
+    //     }
+    // }
 
 }

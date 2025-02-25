@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Auditorium.unity
     guid: 3900db9101d39b24582586bb2452dbca
+  - enabled: 1
+    path: Assets/Scenes/Map.unity
+    guid: 875eb435380a67f49900bb38f99a503f
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: e4e82ed44d516f24ab7dc7d9fc86151f,
       type: 2}

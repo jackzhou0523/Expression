@@ -8,5 +8,12 @@ public class MapUI : MonoBehaviour
     {
         Debug.Log("Map opened!");
         FindObjectOfType<SceneLoader>().FadeToSceneName("Map");
+        // StartCoroutine(UpdateMap());
     }
+
+    // private IEnumerator UpdateMap()
+    // {
+    //     yield return null;
+    //     MapManager.Instance.GenerateMap(GameManager.Instance.allLocations);
+    // }
 }

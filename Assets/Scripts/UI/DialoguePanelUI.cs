@@ -8,16 +8,18 @@ using UnityEngine.EventSystems;
 public class DialoguePanelUI : MonoBehaviour
 {   
     [Header("Typing Speed")]
-    [SerializeField] private float typingspeed = 0.05f;
+    [SerializeField] private float typingspeed = 0.03f;
     [Header("Components")]
     [SerializeField] private GameObject contentParent;
     [SerializeField] private GameObject continueIcon;
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private TextMeshProUGUI speakerNameText;
     [SerializeField] private DialogueChoiceButton[] choiceButtons;
+    // [SerializeField] private Animator portraitAnimator;
 
     private Coroutine displayLineCoroutine;
     private bool canContinueToNextLine = true;
+    private bool isTyping = false;
     // private const string SPEAKER_TAG = "speaker";
     // private const string PORTRAIT_TAG = "portrait";
     // private const string LAYOUT_TAG = "layout";
@@ -111,7 +113,14 @@ public class DialoguePanelUI : MonoBehaviour
         canContinueToNextLine = false;
 
         foreach (char letter in line)
-        {
+        {   
+            // GameEventsManager.Instance.inputEvents.Pressed += () => isTyping = true;
+            // if (isTyping)
+            // {
+            //     dialogueText.text = line;
+            //     break;
+            // }
+
             dialogueText.text += letter;
             yield return new WaitForSeconds(typingspeed);
         }
@@ -121,6 +130,7 @@ public class DialoguePanelUI : MonoBehaviour
         choiceDisplay(dialogueChoices);
 
         canContinueToNextLine = true;
+        isTyping = false;
     }
 
     
@@ -150,4 +160,5 @@ public class DialoguePanelUI : MonoBehaviour
         dialogueText.text = "";
         speakerNameText.text = "";
     }
+
 }

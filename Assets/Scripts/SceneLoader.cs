@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    public Image fadePanel;
+    public static Image fadePanel;
     private float fadeDuration = 1f;
 
     private void Start()
@@ -73,6 +73,7 @@ public class SceneLoader : MonoBehaviour
         }
         Debug.Log(sceneName);
         SceneManager.LoadScene(sceneName);
+        StartCoroutine(FadeIn());
     }
     private IEnumerator FadeOut(int sceneIndex)
     {
@@ -87,10 +88,11 @@ public class SceneLoader : MonoBehaviour
         }
         Debug.Log(sceneIndex);
         SceneManager.LoadScene(sceneIndex);
+        StartCoroutine(FadeIn());
     }
 
     private void OnSceneLoaded()
-    {
+    {   
         StartCoroutine(CheckAutoDialogue());
     }
 
@@ -104,7 +106,6 @@ public class SceneLoader : MonoBehaviour
         {   
             GameEventsManager.Instance.dialogueEvents.EnterDialogue(knotName);
         }
-
     }
 
     private string GenerateKnotName(string location)

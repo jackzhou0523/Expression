@@ -15,10 +15,11 @@ public class DialogueManager : MonoBehaviour
     private bool dialogueActive = false;
     private InkDialogueVariables inkDialogueVariables;
     private const string SPEAKER_TAG = "speaker";
-    // private const string PORTRAIT_TAG = "portrait";
+    private const string PORTRAIT_TAG = "portrait";
     // private const string LAYOUT_TAG = "layout";
     private string speakerName;
-    // private string portrait;
+    [SerializeField] private Animator portraitAnimator;
+    private string portrait;
     // private string layout;
     private void Awake() 
     {   
@@ -33,7 +34,8 @@ public class DialogueManager : MonoBehaviour
         }
         story = new Story(inkJSON.text);
         inkDialogueVariables = new InkDialogueVariables(story);
-    }
+        story.BindExternalFunction("ADVANCE_TIME", () => TimeSystem.AdvanceTime());
+    }   
 
     private void OnEnable() 
     {
@@ -209,9 +211,9 @@ public class DialogueManager : MonoBehaviour
                     Debug.Log("Speaker: " + tagValue);
                     speakerName = tagValue;
                     break;
-                // case PORTRAIT_TAG:
-                //     portrait = tagValue;
-                //     break;
+                case PORTRAIT_TAG:
+                    portraitAnimator.Play(tagValue);
+                    break;
                 // case LAYOUT_TAG:
                 //     layout = tagValue;
                 //     break;
