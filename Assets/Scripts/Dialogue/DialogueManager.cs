@@ -35,6 +35,7 @@ public class DialogueManager : MonoBehaviour
         story = new Story(inkJSON.text);
         inkDialogueVariables = new InkDialogueVariables(story);
         story.BindExternalFunction("ADVANCE_TIME", () => TimeSystem.AdvanceTime());
+        story.BindExternalFunction("LOAD_MAP", () => FindObjectOfType<MapUI>().OpenMap());
     }   
 
     private void OnEnable() 
@@ -211,9 +212,9 @@ public class DialogueManager : MonoBehaviour
                     Debug.Log("Speaker: " + tagValue);
                     speakerName = tagValue;
                     break;
-                case PORTRAIT_TAG:
-                    portraitAnimator.Play(tagValue);
-                    break;
+                // case PORTRAIT_TAG:
+                //     portraitAnimator.Play(tagValue);
+                //     break;
                 // case LAYOUT_TAG:
                 //     layout = tagValue;
                 //     break;
